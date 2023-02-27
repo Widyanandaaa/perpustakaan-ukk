@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('genres', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_number');
-            $table->string('username', 50);
-            $table->string('password', 255);
-            $table->bigInteger('phone_number');
-            $table->string('address', 255);
-            $table->string('role', 30);
-            $table->rememberToken();
+            $table->string('genre');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('genres');
     }
 };

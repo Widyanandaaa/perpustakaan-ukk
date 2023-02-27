@@ -14,10 +14,18 @@ class LoginController extends Controller
 
     public function loginProcess(Request $request)
     {
-        if (Auth::attempt($request->only('username', 'password'))) {
-            return redirect('/home');
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials, $request->input('remember'))) {
+            return redirect()->intended('/home');
         }
 
-        return redirect('/login');
+        return back()->withErrors([
+            'username' => 'Data yang dimasukkan salah!',
+            'password' => 'Data yang dimasukkan salah!',
+        ]);
     }
 }

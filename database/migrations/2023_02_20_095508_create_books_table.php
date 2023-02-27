@@ -19,12 +19,13 @@ return new class extends Migration
             $table->text('book_synopsis');
             $table->string('author', 100);
             $table->string('publisher', 100);
-            $table->date('publication_year');
+            $table->smallInteger('publication_year');
             $table->string('title');
             $table->string('book_category', 50);
+            $table->string('book_genre', 50);
             $table->string('book_code', 10);
             $table->smallInteger('book_count');
-            $table->string('book_status', 50);
+            $table->timestamps();
         });
     }
 

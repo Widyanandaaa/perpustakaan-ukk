@@ -25,6 +25,7 @@ return new class extends Migration
             $table->smallInteger('borrowing_amount');
             $table->integer('fine')->nullable();
             $table->string('status');
+            $table->timestamps();
         });
     }
 
