@@ -17,21 +17,7 @@ class GenreFactory extends Factory
     public function definition()
     {
         return [
-            [
-                'genre' => 'Romance'
-            ],
-            [
-                'genre' => 'Comedy'
-            ],
-            [
-                'genre' => 'Action'
-            ],
-            [
-                'genre' => 'Psychological'
-            ],
-            [
-                'genre' => 'Horror'
-            ],
+            'name' => $this->faker->randomElement(['Romance', 'Comedy', 'Action', 'psychological', 'horror'])
         ];
     }
 }

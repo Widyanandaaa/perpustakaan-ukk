@@ -1,6 +1,6 @@
 @extends('Layouts.navbar')
 
-@section('title', 'PerpustakaAnya | Home')
+@section('title', 'PerpustakaAnya | Daftar Genre')
 @section('user-dropdown')
   <li><a href="#" class="dropdown-item">Kelola akun</a></li>
   <li><a href="#" class="dropdown-item">Kelola Peminjaman</a></li>
@@ -15,7 +15,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active">Beranda</li>
+            <li class="breadcrumb-item"><a href="/home">Beranda</a></li>
+            <li class="breadcrumb-item active">Daftar Genre</li>
           </ol>
         </div>
       </div>
@@ -31,41 +32,41 @@
           <div class="col-md-8">
             <div class="card">
               <div class="card-body">
-                <h3 class="font-weight-white ml-3"><b>Beranda</b></h3>
+                <h3 class="font-weight-white ml-3"><b>Daftar Genre Buku</b></h3>
                 <div class="d-flex mb-2" style="margin-top: -5px">
                   <div class="bg-orange mr-2" style="width: 10px; height: 10px; margin-top: -2px; border-radius: 100%"></div>
-                  <div class="bg-orange" style="width: 100px; height: 5px;"></div>
+                  <div class="bg-orange" style="width: 225px; height: 5px;"></div>
                 </div>
                 <div class="row">
-                  @foreach ($books as $book)
-                    <!-- Book card -->
-                    <div class="col-md-6">
-                      <div class="card card-teal card-outline">
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-sm-5">
-                              <a href="{{ route('book.show', $book->book_code) }}">
-                                <img src="{{ asset('storage/images/' . $book->cover) }}" alt="{{ $book->title }}" style="width: 100px; height: 150px;">
-                              </a>
-                            </div>
-                            <div class="col-sm-7">
-                              <a href="{{ route('book.show', $book->book_code) }}"><h5 class="card-title">{{ $book->title }}</h5></a>
-                
-                              <p class="card-text text-muted">{{ $book->author }}</p>
-                              <div class="row jusify-content-center">
-                                  <div class="col">
-                                    @foreach ($book->genres as $genre)
-                                      <span class="badge badge-light mr-1 mb-1">{{ $genre->name }}</span>
-                                    @endforeach
-                                  </div>
+                    @foreach ($books as $book)
+                      <!-- Book card -->
+                      <div class="col-md-6">
+                        <div class="card card-teal card-outline">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-sm-5">
+                                <a href="{{ route('book.show', $book->book_code) }}">
+                                  <img src="{{ asset('storage/images/' . $book->cover) }}" alt="{{ $book->title }}" style="width: 100px; height: 150px;">
+                                </a>
+                              </div>
+                              <div class="col-sm-7">
+                                <a href="{{ route('book.show', $book->book_code) }}"><h5 class="card-title">{{ $book->title }}</h5></a>
+                  
+                                <p class="card-text text-muted">{{ $book->author }}</p>
+                                <div class="row jusify-content-center">
+                                    <div class="col">
+                                      @foreach ($book->genres as $genre)
+                                        <span class="badge badge-light mr-1 mb-1">{{ $genre->name }}</span>
+                                      @endforeach
+                                    </div>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <!-- End of Book Card -->
-                  @endforeach
+                      <!-- End of Book Card -->
+                    @endforeach
                   </div>
               </div>
               <div class="card-footer">
@@ -111,9 +112,9 @@
               <div class="card-body">
                 <div class="row jusify-content-center">
                   @foreach ($genres as $genre)
-                    <div class="col-4">
-                          <a href="{{ route('genre-list', $genre->name) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $genre->name }}</a>
-                    </div>
+                  <div class="col-4">
+                        <a href="{{ route('genre-list', $genre->name) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $genre->name }}</a>
+                  </div>
                   @endforeach
                 </div>
               </div>
@@ -128,11 +129,11 @@
               </div>
               <div class="card-body">
                 <div class="row jusify-content-center">
-                  @foreach ($categories as $category)
-                  <div class="col-4">
-                      <a href="{{ route('category-list', $category) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $category }}</a>
-                  </div>
-                  @endforeach
+                    @foreach ($categories as $category)
+                    <div class="col-4">
+                        <a href="{{ route('category-list', $category) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $category }}</a>
+                    </div>
+                    @endforeach
                 </div>
               </div>
             </div>

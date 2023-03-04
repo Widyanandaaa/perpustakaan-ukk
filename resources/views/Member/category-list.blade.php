@@ -1,6 +1,6 @@
 @extends('Layouts.navbar')
 
-@section('title', 'PerpustakaAnya | Home')
+@section('title', 'PerpustakaAnya | Daftar Kategori')
 @section('user-dropdown')
   <li><a href="#" class="dropdown-item">Kelola akun</a></li>
   <li><a href="#" class="dropdown-item">Kelola Peminjaman</a></li>
@@ -15,7 +15,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active">Beranda</li>
+            <li class="breadcrumb-item"><a href="/home">Beranda</a></li>
+            <li class="breadcrumb-item active">Daftar Kategori</li>
           </ol>
         </div>
       </div>
@@ -31,7 +32,7 @@
           <div class="col-md-8">
             <div class="card">
               <div class="card-body">
-                <h3 class="font-weight-white ml-3"><b>Beranda</b></h3>
+                <h3 class="font-weight-white ml-3"><b>daftar kategori Buku</b></h3>
                 <div class="d-flex mb-2" style="margin-top: -5px">
                   <div class="bg-orange mr-2" style="width: 10px; height: 10px; margin-top: -2px; border-radius: 100%"></div>
                   <div class="bg-orange" style="width: 100px; height: 5px;"></div>
@@ -66,7 +67,7 @@
                     </div>
                     <!-- End of Book Card -->
                   @endforeach
-                  </div>
+                </div>
               </div>
               <div class="card-footer">
                 <ul class="pagination justify-content-center">
@@ -111,9 +112,9 @@
               <div class="card-body">
                 <div class="row jusify-content-center">
                   @foreach ($genres as $genre)
-                    <div class="col-4">
-                          <a href="{{ route('genre-list', $genre->name) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $genre->name }}</a>
-                    </div>
+                  <div class="col-4">
+                        <a href="{{ route('genre-list', $genre->name) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $genre->name }}</a>
+                  </div>
                   @endforeach
                 </div>
               </div>
@@ -128,11 +129,11 @@
               </div>
               <div class="card-body">
                 <div class="row jusify-content-center">
-                  @foreach ($categories as $category)
-                  <div class="col-4">
-                      <a href="{{ route('category-list', $category) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $category }}</a>
-                  </div>
-                  @endforeach
+                    @foreach ($categories as $category)
+                    <div class="col-4">
+                        <a href="{{ route('category-list', $category) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $category }}</a>
+                    </div>
+                    @endforeach
                 </div>
               </div>
             </div>

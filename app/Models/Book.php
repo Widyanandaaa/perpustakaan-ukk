@@ -15,10 +15,8 @@ class Book extends Model
         'updated_at',
     ];
 
-    public function coverPath()
+    public function genres()
     {
-        $ImagePath  = ($this->cover) ? $this->cover : 'NyZ17qRrxznFsgskWxqW4f2CrShFL6m208GCufZv.png';
-        
-        return '/storage/image/' . $ImagePath;
+        return $this->belongsToMany(Genre::class);
     }
 }

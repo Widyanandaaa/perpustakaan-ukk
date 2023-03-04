@@ -39,9 +39,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item">
             <a href="/home" class="nav-link">Beranda</a>
           </li>
-          <li class="nav-item">
-            <a href="/daftar-buku" class="nav-link">Daftar Buku</a>
-          </li>
         </ul>
       </div>
 

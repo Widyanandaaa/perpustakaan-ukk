@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use DataTables;
+use Image;
 
 class BookController extends Controller
 {
@@ -25,9 +27,9 @@ class BookController extends Controller
             return Datatables::of($books)
             ->addColumn('action', function ($book) {
                 return '<div class="d-flex justify-content-center">
-                        <a href="' . route('book.edit', $book->book_id) . '" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                        <a href="' . route('book.edit', $book->book_code) . '" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                         &nbsp;&nbsp;
-                        <a href="javascript:void(0)" id="tombol-hapus" data-id="' . $book->book_id . '" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-trash-alt"></i></a>
+                        <a href="javascript:void(0)" id="deleteButton" data-id="' . $book->id . '" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-trash-alt"></i></a>
                         </div>';
             })
             ->rawColumns(['action'])
@@ -42,9 +44,11 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Book $book)
+    public function create()
     {
-        return view('Librarian.create-book', ['book' => $book]);
+        $genres = Genre::pluck('name', 'id');
+
+        return view('Librarian.create-book', compact('genres'));
     }
 
     /**
@@ -55,7 +59,50 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'book_code' => 'required|unique:books',
+            'author' => 'required',
+            'publisher' => 'required',
+            'synopsis' => 'required',
+            'cover' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'category' => 'required',
+            'genres' => 'required|array',
+            'amount' => 'required',
+            'publication_year' => 'required',
+
+        ]);
+
+        $book = new Book([
+            'title' => $validatedData['title'],
+            'book_code' => $validatedData['book_code'],
+            'author' => $validatedData['author'],
+            'publisher' => $validatedData['publisher'],
+            'synopsis' => $validatedData['synopsis'],
+            'category' => $validatedData['category'],
+            'book_count' => $validatedData['amount'],
+            'publication_year' => $validatedData['publication_year'],
+        ]);
+
+        if ($request->hasFile('cover')) {
+            $image = $request->file('cover');
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+        
+            $image = Image::make($image);
+            $image->fit(200, 300)->save(storage_path('app/public/images/' . $fileName));
+        
+            $book->cover = $fileName;
+        }
+
+        $book->save();
+
+        $genres = $request->input('genres', []);
+        foreach ($genres as $genreId) {
+            $genre = Genre::find($genreId);
+            $book->genres()->attach($genre);
+        }
+
+        return redirect()->route('book.index')->with('success', 'Data Buku Berhasil Ditambahkan!');
     }
 
     /**
@@ -64,9 +111,14 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show($id)
     {
-        //
+        $book = Book::where('book_code', $id)->get();
+        $book = $book[0];
+        $categories = Book::pluck('category');
+        $genres = Genre::all();
+
+        return view('Librarian.show-book', compact('book', 'genres', 'categories'));
     }
 
     /**
@@ -75,9 +127,14 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit($id)
     {
-        return view('Librarian.edit-book', ['book' => $book]);
+        $book = Book::where('book_code', $id)->get();
+        $book = $book[0];
+        $selectedGenres = $book->genres->pluck('id')->toArray();
+        $genres = Genre::pluck('name', 'id');
+
+        return view('Librarian.edit-book', compact('book', 'genres', 'selectedGenres'));
     }
 
     /**
@@ -87,9 +144,53 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'book_code' => 'required',
+            'author' => 'required',
+            'publisher' => 'required',
+            'synopsis' => 'required',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg',
+            'category' => 'required',
+            'genres' => 'required|array',
+            'amount' => 'required',
+            'publication_year' => 'required',
+
+        ]);
+
+        $book = Book::where('book_code', $id)->get();
+        $book = $book[0];
+
+        $book->title = $request->input('title');
+        $book->book_code = $request->input('book_code');
+        $book->author = $request->input('author');
+        $book->publisher = $request->input('publisher');
+        $book->synopsis = $request->input('synopsis');
+        $book->category = $request->input('category');
+        $book->book_count = $request->input('amount');
+        $book->publication_year = $request->input('publication_year');
+        
+        if ($request->hasFile('cover')) {
+            $image = $request->file('cover');
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+
+            $image = Image::make($image);
+            $image->fit(200, 300)->save(storage_path('app/public/images/' . $fileName));
+
+            $book->cover = $fileName;
+        }
+        
+        // $genres = $request->input('genres', []);
+        // foreach ($genres as $genreId) {
+        //     $genre = Genre::find($genreId);
+        //     $book->genres()->attach($genre);
+        // }
+        $book->save();
+        $book->genres()->sync($request->input('genres', []));
+
+        return redirect()->route('book.index')->with('success', "Data Buku $book->title Berhasil Diubah!");
     }
 
     /**
@@ -98,14 +199,13 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
-    }
+        $book = Book::find($id);
 
-    public function bookListIndex(Book $book)
-    {
-        // dd($book->book_code);
-        return view('Member.book-list', ['book' => $book]);
+        Book::destroy($id);
+        // dd($book->title);
+
+        return redirect()->route('book.index')->with('deleted', "Data Buku $book->title Berhasil Dihapus!");
     }
 }

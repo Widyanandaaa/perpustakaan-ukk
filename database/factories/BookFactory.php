@@ -18,13 +18,12 @@ class BookFactory extends Factory
     {
         return [
             'cover' => 'test',
-            'book_synopsis' => 'test',
+            'synopsis' => 'test',
             'author' => 'Zidane',
             'publisher' => 'Widyananda',
             'publication_year' => 2005,
             'title' => 'K-ON!',
-            'book_category' => 'Manga',
-            'book_genre' => 'comedy',
+            'category' => 'Manga',
             'book_code' => 'ZY987',
             'book_count' => 7,
         ];

@@ -18,6 +18,37 @@
 @endsection
 
 @section('content')
+@if (session('deleted'))
+  <div class="card card-danger card-outline">
+    <div class="card-header">
+      <h4 class="card-title">{{ session('deleted') }}</h4>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+@endif
+@if (session('success'))
+  <div class="card card-success card-outline">
+    <div class="card-header">
+      <h4 class="card-title">{{ session('success') }}</h4>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+@endif
+
 <div class="card">
     <div class="card-body">
       <table id="dataTable" class="table table-bordered table-striped table-hover">
@@ -50,11 +81,15 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>yakin hapus data buku ini?</p>
+          <p id="deleteText">yakin hapus data buku ini?</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+          <form action="" method="POST" name="delete-book-form" id="formDelete">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+          </form>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -84,7 +119,7 @@
               {data: 'book_count', title: 'Jumlah Buku', searchable: false},
               {data: 'author', title: 'pengarang'},
               {data: 'publisher', title: 'Penerbit'},
-              {data: 'book_category', title: 'Kategori'},
+              {data: 'category', title: 'Kategori'},
               {data: 'publication_year', title: 'Tahun Terbit', searchable: false},
               {data: 'action', title: 'Aksi', orderable: false, searchable: false},
             ],
@@ -100,6 +135,19 @@
 
           $('#search-input').on('keyup', function () {
             table.search(this.value).draw();
+          });
+
+          table.on('click', '#deleteButton', function() {
+            var tr = $(this).closest('tr');
+            if( $(tr).hasClass('child') ) {
+              tr = tr.prev('.parent');
+            }
+        
+            var data = table.row(tr).data();
+            console.log(data.id);
+
+            $('#deleteText').text(`Yakin hapus data ${data.title} ?`)
+            $('#formDelete').attr('action', `/pustakawan/hapus/${data.id}`);
           });
         });
       </script>

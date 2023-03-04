@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Book;
+use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             BookSeeder::class,
+            GenreSeeder::class,
         ]);
         // \App\Models\User::factory()->create();
 
@@ -47,5 +49,13 @@ class BookSeeder extends Seeder
     public function run()
     {
         Book::factory()->count(15)->create();
+    }
+}
+
+class GenreSeeder extends Seeder
+{
+    public function run()
+    {
+        Genre::factory()->count(7)->create();
     }
 }
