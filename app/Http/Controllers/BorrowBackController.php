@@ -145,9 +145,15 @@ class BorrowBackController extends Controller
     {
         $borrow = BorrowBack::where('bb_id', $id)->get();
         $borrow = $borrow[0];
+        $book = Book::where('book_code', $borrow->book_code)->get();
+        $book = $book[0];
         $deadline = Carbon::parse($borrow->deadline);
         $returnDate = Carbon::parse($request->input('return_date'));
         $daysLate = $deadline->diffInDays($returnDate, false);
+        
+        $book->book_count = $book->book_count + $borrow->borrowing_amount;
+        $book->save();            
+        
 
         if ($daysLate > 0) {
             $fine = $daysLate * 5000;

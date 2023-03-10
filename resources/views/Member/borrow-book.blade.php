@@ -46,7 +46,7 @@
                                     @elseif ($item->status === 'Ditolak')
                                       <span class="badge badge-danger ml-1 mt-1" style="position: absolute; opacity: 85%;">Ditolak</span>
                                     @elseif ($item->status === 'Dikembalikan')
-                                      <span class="badge badge-info ml-1 mt-1" style="position: absolute; opacity: 85%;">Dikembalikan</span>
+                                      <span class="badge badge-primary ml-1 mt-1" style="position: absolute; opacity: 85%;">Dikembalikan</span>
                                     @endif
                                     <img src="{{ asset('storage/images/' . $cover[$index]) }}" alt="{{ $item->book_title }}">
                                   </a>
