@@ -40,7 +40,23 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::factory()->create();
+        User::factory()->state([
+            'username' => 'admin',
+            'password' => '$2a$10$VJ19U93eqQcSH1WF/NSxDur5dNpHZWSTT.5acHRF51609sZKJZmPG', //admin
+            'user_number' => 777,
+            'phone_number' => 62877,
+            'address' => 'home',
+            'role' => 'Pustakawan',
+        ])->create();
+        
+        User::factory()->state([
+            'username' => 'Zidane',
+            'password' => '$2a$10$HIJYZAaUT8VGks3MDmuaYONKsQgbTr.nybta3I6fFzw5PfGNo6VG.', //member
+            'user_number' => 111,
+            'phone_number' => 628777,
+            'address' => 'home',
+            'role' => 'Member',
+        ])->create();
     }
 }
 

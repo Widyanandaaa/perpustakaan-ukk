@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date('return_date')->nullable();
             $table->smallInteger('borrowing_amount');
             $table->integer('fine')->nullable();
-            $table->string('status');
+            $table->enum('status', ['Pending', 'Ditolak', 'Dipinjam', 'Dikembalikan']);
             $table->timestamps();
         });
     }

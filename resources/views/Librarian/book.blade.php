@@ -18,37 +18,6 @@
 @endsection
 
 @section('content')
-@if (session('deleted'))
-  <div class="card card-danger card-outline">
-    <div class="card-header">
-      <h4 class="card-title">{{ session('deleted') }}</h4>
-      <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-@endif
-@if (session('success'))
-  <div class="card card-success card-outline">
-    <div class="card-header">
-      <h4 class="card-title">{{ session('success') }}</h4>
-      <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-@endif
-
 <div class="card">
     <div class="card-body">
       <table id="dataTable" class="table table-bordered table-striped table-hover">

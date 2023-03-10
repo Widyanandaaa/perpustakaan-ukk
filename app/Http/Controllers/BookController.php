@@ -5,15 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Http\Request;
-use DataTables;
-use Image;
+use Yajra\DataTables\DataTables;
+use Image   ;
 
 class BookController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -111,14 +107,9 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        $book = Book::where('book_code', $id)->get();
-        $book = $book[0];
-        $categories = Book::pluck('category');
-        $genres = Genre::all();
-
-        return view('Librarian.show-book', compact('book', 'genres', 'categories'));
+        //
     }
 
     /**
@@ -182,11 +173,6 @@ class BookController extends Controller
             $book->cover = $fileName;
         }
         
-        // $genres = $request->input('genres', []);
-        // foreach ($genres as $genreId) {
-        //     $genre = Genre::find($genreId);
-        //     $book->genres()->attach($genre);
-        // }
         $book->save();
         $book->genres()->sync($request->input('genres', []));
 
@@ -207,5 +193,10 @@ class BookController extends Controller
         // dd($book->title);
 
         return redirect()->route('book.index')->with('deleted', "Data Buku $book->title Berhasil Dihapus!");
+    }
+
+    public function librarianHome()
+    {
+        return view('Librarian.home');
     }
 }

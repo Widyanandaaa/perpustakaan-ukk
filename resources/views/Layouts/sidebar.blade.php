@@ -33,12 +33,19 @@
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <a class="nav-link d-flex" data-toggle="dropdown" href="#">
+          <span class="mr-2">{{ auth()->user()->username }}</span>
           <i class="far fa-user-circle" style="font-size: 24px"></i>
         </a>
             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-              <li><a href="#" class="dropdown-item">Kelola akun</a></li>
-              <li><a href="#" class="dropdown-item">Kelola Peminjaman</a></li>
+              <li><a href="{{ route('librarian.index') }}" class="dropdown-item">Kelola Perpustakaan</a></li>
+              <li class="dropdown-divider"></li>
+              <form action="{{ route('logout') }}" id="logout-form" method="post">
+                @csrf
+                <li><a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  Logout
+                </a></li>
+              </form>
             </ul>
       </li>
     </ul>
@@ -48,7 +55,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-light-warning elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link bg-warning  ">
+    <a href="/home" class="brand-link bg-warning  ">
       <span class="brand-text font-weight-light">Perpustaka<b>Anya</b></span>
     </a>
 
@@ -57,7 +64,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 mb-3 d-flex">
         <div class="info">
-          <p class="d-block text-gray">Zrul tempest (9693)</p>
+          <p class="d-block text-gray">{{ auth()->user()->username }} ({{ auth()->user()->user_number }})</p>
         </div>
       </div>
 
@@ -89,8 +96,8 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item @yield('nav-borrow-open')">
+            <a href="" class="nav-link @yield('borrow-active')">
               <i class="nav-icon fas fa-exchange-alt"></i>
               <p>
                 Kelola transaksi
@@ -99,13 +106,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('borrow.index') }}" class="nav-link @yield('borrow-table-active')">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Peminjaman buku</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('return.index') }}" class="nav-link @yield('return-table-active')">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pengembalian buku</p>
                 </a>
@@ -115,10 +122,13 @@
           <div class="fixed-bottom ml-2 mb-2">
             <ul class="nav nav-sidebar nav-pills">
               <li class="nav-item">
-                <a href="#" class="nav-link ">
-                  <i class="nav-icon fas fa-sign-out-alt"></i>
-                  <p>Logout</p>
-                </a>
+                <form action="{{ route('logout') }}" id="logout-form" method="post">
+                  @csrf
+                  <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
+                  </a>
+                </form>
               </li>
             </ul>
           </div>
@@ -153,6 +163,30 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
+            @if (session('deleted'))
+              <div class="card card-danger card-outline">
+                <div class="card-header">
+                  <h4 class="card-title">{{ session('deleted') }}</h4>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            @endif
+            @if (session('success'))
+              <div class="card card-success card-outline">
+                <div class="card-header">
+                  <h4 class="card-title">{{ session('success') }}</h4>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            @endif
             @yield('content')
           </div>
         </div>
@@ -169,11 +203,6 @@
     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
 

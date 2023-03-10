@@ -1,9 +1,9 @@
 @extends('Layouts.navbar')
 
 @section('title', 'PerpustakaAnya | Detail Buku')
-@section('user-dropdown')
-  <li><a href="#" class="dropdown-item">Kelola akun</a></li>
-  <li><a href="#" class="dropdown-item">Kelola Peminjaman</a></li>
+
+@section('css')
+  <link rel="stylesheet" href="{{ asset('template/plugins/toastr/toastr.min.css') }}">
 @endsection
 
 @section('header')
@@ -41,20 +41,61 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <button type="button" class="btn bg-gradient-info btn-sm px-4 mt-2 float-right">Pinjam</button>
+                        @guest
+                        <button type="button" class="btn bg-gradient-info btn-sm px-4 mt-2 float-right toastrDefaultInfo">Pinjam</button>
+                        @else
+                          @if (auth()->user()->role == 'Member' && $book->book_count > 0)
+                            <button type="button" class="btn bg-gradient-info btn-sm px-4 mt-2 float-right" data-toggle="modal" data-target="#borrow-modal">Pinjam</button>
+                            
+                            <div class="modal fade show" id="borrow-modal" style="display: none;" aria-modal="true" role="dialog">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header bg-teal">
+                                    <h4 class="modal-title">Pinjam buku</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">×</span>
+                                    </button>
+                                  </div>
+                                  <form action="{{ route('borrow.book', ['user_number' => auth()->user()->user_number, 'book_code' => $book->book_code]) }}" method="POST" name="borrow-book-form" id="formBorrow">
+                                    @csrf
+                                    <div class="modal-body">
+                                      <label for="bookAmount">Jumlah buku yang ingin dipinjam</label>
+                                      <input type="number" class="form-control" id="bookAmount" name="amount" value="1" placeholder="Isi jumlah buku yang ingin dipinjam">
+                                      <p class="mt-4" style="margin-bottom: -10px">Jumlah buku yang tersisa : {{ $book->book_count  }}</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                      <button type="submit" class="btn bg-gradient-info">Pinjam</button>
+                                    </div>
+                                  </form>
+                                </div>
+                                <!-- /.modal-content -->
+                              </div>
+                              <!-- /.modal-dialog -->
+                            </div>
+                          @elseif (auth()->user()->role == 'Member' && $book->book_count <= 0)
+                            <button type="button" class="btn bg-gradient-info btn-sm px-4 mt-2 float-right disabled">Pinjam</button>
+                          @else
+                          <button type="button" class="btn bg-gradient-info btn-sm px-4 mt-2 float-right toastrDefaultInfo">Pinjam</button>
+                          @endif    
+                        @endguest
                       </div>
                     </div>
                 </div>
               <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
+                      @if ($book->book_count > 0)
                         <span class="badge badge-success ml-1 mt-1" style="position: absolute; opacity: 85%;">Tersedia</span>
+                      @else
+                        <span class="badge badge-secondary ml-1 mt-1" style="position: absolute; opacity: 85%;">Tidak tersedia</span>  
+                      @endif
                         <img src="{{ asset('storage/images/' . $book->cover) }}" alt="{{ $book->title }}" style="width: 200px; height: 300px;">
                     </div>
                     <div class="col-sm-8">
                         <div class="ml-3">
                             <div class="row">
-                                <h4>{{ $book->title }}</h4>
+                                <h4 class="text-wrap">{{ $book->title }}</h4>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-sm-4">
@@ -127,11 +168,33 @@
               </div>
               <div class="card-body">
                 <div class="row jusify-content-center">
-                  @foreach ($categories as $category)
                   <div class="col-4">
-                      <a href="{{ route('category-list', $category) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $category }}</a>
+                      <a href="{{ route('category-list', 'Manga') }}" class="btn btn-block btn-secondary btn-xs mb-2">Manga</a>
                   </div>
-                  @endforeach
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Novel') }}" class="btn btn-block btn-secondary btn-xs mb-2">Novel</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Majalah') }}" class="btn btn-block btn-secondary btn-xs mb-2">Majalah</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Kamus') }}" class="btn btn-block btn-secondary btn-xs mb-2">Kamus</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Komik') }}" class="btn btn-block btn-secondary btn-xs mb-2">Komik</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Ensiklopedia') }}" class="btn btn-block btn-secondary btn-xs mb-2">Ensiklopedia</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Biografi') }}" class="btn btn-block btn-secondary btn-xs mb-2">Biografi</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Naskah') }}" class="btn btn-block btn-secondary btn-xs mb-2">Naskah</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Novel ringan') }}" class="btn btn-block btn-secondary btn-xs mb-2">Novel Ringan</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -141,4 +204,15 @@
         <!-- /.row -->
     </div>
   </section>
+@endsection
+
+@section('js')
+  <script src="{{ asset('template/plugins/toastr/toastr.min.js') }}"></script>
+  <script>
+    $(document).ready(function () {
+      $('.toastrDefaultInfo').click(function () {
+        toastr.info('Silahkan login sebagai member untuk meminjam buku.');
+      });
+    });
+  </script>
 @endsection

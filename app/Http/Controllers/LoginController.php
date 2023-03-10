@@ -20,7 +20,11 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->input('remember'))) {
-            return redirect()->intended('/home');
+            if (auth()->user()->role === 'Pustakawan') {
+                return redirect()->route('librarian.index');
+            } else {
+                return redirect()->intended('/home');
+            }
         }
 
         return back()->withErrors([
@@ -28,4 +32,15 @@ class LoginController extends Controller
             'password' => 'Data yang dimasukkan salah!',
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+    
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
+        return redirect('/');
+    }    
 }

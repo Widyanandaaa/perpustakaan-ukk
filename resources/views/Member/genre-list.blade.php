@@ -1,10 +1,6 @@
 @extends('Layouts.navbar')
 
 @section('title', 'PerpustakaAnya | Daftar Genre')
-@section('user-dropdown')
-  <li><a href="#" class="dropdown-item">Kelola akun</a></li>
-  <li><a href="#" class="dropdown-item">Kelola Peminjaman</a></li>
-@endsection
 
 @section('header')
   <section class="content-header">
@@ -38,6 +34,7 @@
                   <div class="bg-orange" style="width: 225px; height: 5px;"></div>
                 </div>
                 <div class="row">
+                  @if (isset($books[0]))
                     @foreach ($books as $book)
                       <!-- Book card -->
                       <div class="col-md-6">
@@ -50,9 +47,9 @@
                                 </a>
                               </div>
                               <div class="col-sm-7">
-                                <a href="{{ route('book.show', $book->book_code) }}"><h5 class="card-title">{{ $book->title }}</h5></a>
+                                <a href="{{ route('book.show', $book->book_code) }}"><h5 class="text-truncate">{{ $book->title }}</h5></a>
                   
-                                <p class="card-text text-muted">{{ $book->author }}</p>
+                                <p class="card-text text-muted text-wrap">{{ $book->author }}</p>
                                 <div class="row jusify-content-center">
                                     <div class="col">
                                       @foreach ($book->genres as $genre)
@@ -67,35 +64,13 @@
                       </div>
                       <!-- End of Book Card -->
                     @endforeach
+                  @else
+                      <span class="mx-auto">--- Buku dengan genre ini kosong ---</span>
+                  @endif
                   </div>
               </div>
               <div class="card-footer">
-                <ul class="pagination justify-content-center">
-                    <li class="paginate_button page-item previous disabled" id="example2_previous">
-                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                    </li>
-                    <li class="paginate_button page-item active">
-                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                    </li>
-                    <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                    </li>
-                    <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                    </li>
-                    <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                    </li>
-                    <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                    </li>
-                    <li class="paginate_button page-item ">
-                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                    </li>
-                    <li class="paginate_button page-item next" id="example2_next">
-                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                    </li>
-                </ul>
+                {{ $books->links('Layouts.pagination') }}
               </div>
             </div>
           </div>
@@ -129,11 +104,33 @@
               </div>
               <div class="card-body">
                 <div class="row jusify-content-center">
-                    @foreach ($categories as $category)
-                    <div class="col-4">
-                        <a href="{{ route('category-list', $category) }}" class="btn btn-block btn-secondary btn-xs mb-2">{{ $category }}</a>
-                    </div>
-                    @endforeach
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Manga') }}" class="btn btn-block btn-secondary btn-xs mb-2">Manga</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Novel') }}" class="btn btn-block btn-secondary btn-xs mb-2">Novel</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Majalah') }}" class="btn btn-block btn-secondary btn-xs mb-2">Majalah</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Kamus') }}" class="btn btn-block btn-secondary btn-xs mb-2">Kamus</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Komik') }}" class="btn btn-block btn-secondary btn-xs mb-2">Komik</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Ensiklopedia') }}" class="btn btn-block btn-secondary btn-xs mb-2">Ensiklopedia</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Biografi') }}" class="btn btn-block btn-secondary btn-xs mb-2">Biografi</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Naskah') }}" class="btn btn-block btn-secondary btn-xs mb-2">Naskah</a>
+                  </div>
+                  <div class="col-4">
+                      <a href="{{ route('category-list', 'Novel ringan') }}" class="btn btn-block btn-secondary btn-xs mb-2">Novel Ringan</a>
+                  </div>
                 </div>
               </div>
             </div>

@@ -6,31 +6,21 @@ use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class GuestController extends Controller
 {
     public function index(Book $books, Genre $genres)
     {
-        $books = Book::all();
-        $categories = Book::pluck('category');
-        $genres = Genre::all();
-
-        return view('Member.home', compact('books', 'genres', 'categories'));
+        
     }
-
-    public function librarianHome()
-    {
-        return view('Librarian.home');
-    }
-
     public function genreList(Book $books, Genre $genres, $genre)
     {
         $books = Book::whereHas('genres', function ($query) use ($genre) {
-            $query->where('name', $genre);
+            $query->where('name'enre);
         })->get();
         $categories = Book::pluck('category');
         $genres = Genre::all();
 
-        return view('Member.genre-list', compact('books', 'genres', 'categories'));
+        return view('Guest.genre-list', compact('books', 'genres', 'categories'));
     }
 
     public function categoryList(Genre $genres, $category)
@@ -39,6 +29,16 @@ class HomeController extends Controller
         $categories = Book::pluck('category');
         $genres = Genre::all();
 
-        return view('Member.category-list', compact('books', 'genres', 'categories'));
+        return view('Guest.category-list', compact('books', 'genres', 'categories'));
+    }
+
+    public function showBook($id)
+    {
+        $book = Book::where('book_code', $id)->get();
+        $book = $book[0];
+        $categories = Book::pluck('category');
+        $genres = Genre::all();
+
+        return view('Guest.show-book', compact('book', 'genres', 'categories'));
     }
 }

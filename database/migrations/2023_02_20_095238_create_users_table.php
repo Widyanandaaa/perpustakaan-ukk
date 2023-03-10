@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->bigInteger('phone_number');
             $table->string('address', 255);
-            $table->string('role', 30);
+            $table->enum('role', ['Pustakawan', 'Member']);
             $table->rememberToken();
             $table->timestamps();
         });

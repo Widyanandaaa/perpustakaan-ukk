@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class BorrowBack extends Model
 {
     use HasFactory;
+
+    protected $guarded = [
+        'bb_id',
+        'created_at',
+        'updated_at',
+    ];
 }

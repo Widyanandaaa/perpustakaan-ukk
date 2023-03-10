@@ -25,7 +25,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-md navbar-light bg-teal border-bottom-0">
     <div class="container">
-      <a href="/dashboard" class="navbar-brand">
+      <a href="/home" class="navbar-brand">
         <span class="brand-text font-weight-light text-gray-dark">Perpustaka<b>Anya</b></span>
       </a>
 
@@ -49,9 +49,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <i class="fas fa-search"></i>
           </a>
           <div class="navbar-search-block" style="display: none;">
-            <form class="form-inline">
+            <form action="{{ route('book.search') }}" method="GET" id="formSearch" class="form-inline">
               <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Cari disini..." aria-label="Search">
+                <input class="form-control form-control-navbar" id="search" name="query" type="search" placeholder="Cari disini..." aria-label="Search">
                 <div class="input-group-append">
                   <button class="btn btn-navbar" type="submit">
                     <i class="fas fa-search"></i>
@@ -65,14 +65,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
         </li>
         <!-- Account Dropdown Menu -->
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="fas fa-user-circle" style="font-size: 24px"></i>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-            @yield('user-dropdown')
-          </ul>
-        </li>
+        @guest
+          <li class="nav-item">
+            <a href="{{ route('login') }}" class="nav-link" style="text-decoration: underline; font-weight: bold;">Login</a>
+          </li>
+        @else
+          @if (auth()->user()->role == 'Pustakawan')
+              <li class="nav-item">
+                <a class="nav-link d-flex" data-toggle="dropdown" href="#">
+                  <span class="mr-2">{{ auth()->user()->username }}</span>
+                  <i class="fas fa-user-circle" style="font-size: 24px"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                  <li><a href="{{ route('librarian.index') }}" class="dropdown-item">Kelola Perpustakaan</a></li>
+                  <li class="dropdown-divider"></li>
+                  <form action="{{ route('logout') }}" id="logout-form" method="post">
+                    @csrf
+                    <li><a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      Logout
+                    </a></li>
+                  </form>
+                </ul>
+              </li>
+          @else
+            <li class="nav-item">
+              <a class="nav-link d-flex" data-toggle="dropdown" href="#">
+                <span class="mr-2">{{ auth()->user()->username }}</span>
+                <i class="fas fa-user-circle" style="font-size: 24px"></i>
+              </a>  
+              <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                <li><a href="{{ route('member.borrow.index', auth()->user()->username) }}" class="dropdown-item">Kelola Pinjaman</a></li>
+                <li class="dropdown-divider"></li>
+                <form action="{{ route('logout') }}" id="logout-form" method="post">
+                  @csrf
+                  <li><a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                  </a></li>
+                </form>
+              </ul>
+            </li>
+          @endif
+        @endguest
       </ul>
     </div>
   </nav>
@@ -85,6 +118,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.content-header -->
 
     <!-- Main content -->
+    @if (session('warning'))
+      <div class="card card-warning">
+        <div class="card-header">
+          <h4 class="card-title">{{ session('warning') }}</h4>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    @endif
     @yield('main-content')
     <!-- /.content -->
   </div>

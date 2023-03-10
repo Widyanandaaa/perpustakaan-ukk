@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="card-body" style="display: block;">
-      <h3>Azriel Zidane Widyananda</h3>
+      <h3>{{ auth()->user()->username }}</h3>
     </div>
     <!-- /.card-body -->
     <!-- /.card-footer-->

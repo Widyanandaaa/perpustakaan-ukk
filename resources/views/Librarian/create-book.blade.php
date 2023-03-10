@@ -13,7 +13,7 @@
 @endsection
 
 @section('breadcrumb')
-  <li class="breadcrumb-item"><a href="/Pustakawan">Pustakawan</a></li>
+  <li class="breadcrumb-item"><a href="/pustakawan">Pustakawan</a></li>
   <li class="breadcrumb-item"><a href="{{ route('book.index') }}">Buku</a></li>
   <li class="breadcrumb-item active">Tambah Buku</li>
 @endsection
