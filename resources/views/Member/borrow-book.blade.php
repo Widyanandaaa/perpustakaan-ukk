@@ -38,18 +38,20 @@
                             <div class="col-md-3">
                               <div class="card card-teal card-outline">
                                 <div class="card-body">
-                                  <a href="{{ route('book.show', $item->book_code) }}">
-                                    @if ($item->status === 'Pending')
-                                      <span class="badge badge-warning ml-1 mt-1" style="position: absolute; opacity: 85%;">Pending</span>
-                                    @elseif ($item->status === 'Dipinjam')
-                                      <span class="badge badge-success ml-1 mt-1" style="position: absolute; opacity: 85%;">Dipinjam</span>
-                                    @elseif ($item->status === 'Ditolak')
-                                      <span class="badge badge-danger ml-1 mt-1" style="position: absolute; opacity: 85%;">Ditolak</span>
-                                    @elseif ($item->status === 'Dikembalikan')
-                                      <span class="badge badge-primary ml-1 mt-1" style="position: absolute; opacity: 85%;">Dikembalikan</span>
-                                    @endif
-                                    <img src="{{ asset('storage/images/' . $cover[$index]) }}" alt="{{ $item->book_title }}">
-                                  </a>
+                                  <div class="row justify-content-center">
+                                    <a href="{{ route('book.show', $item->book_code) }}">
+                                      @if ($item->status === 'Pending')
+                                        <span class="badge badge-warning ml-1 mt-1" style="position: absolute; opacity: 85%;">Pending</span>
+                                      @elseif ($item->status === 'Dipinjam')
+                                        <span class="badge badge-success ml-1 mt-1" style="position: absolute; opacity: 85%;">Dipinjam</span>
+                                      @elseif ($item->status === 'Ditolak')
+                                        <span class="badge badge-danger ml-1 mt-1" style="position: absolute; opacity: 85%;">Ditolak</span>
+                                      @elseif ($item->status === 'Dikembalikan')
+                                        <span class="badge badge-primary ml-1 mt-1" style="position: absolute; opacity: 85%;">Dikembalikan</span>
+                                      @endif
+                                      <img src="{{ asset('storage/images/' . $cover[$index]) }}" alt="{{ $item->book_title }}">
+                                    </a>
+                                  </div>
                                   <a href="{{ route('book.show', $item->book_code) }}"><h5 class="text-wrap mt-3">{{ $item->book_title }}</h5></a>
                                 </div>
                               </div>

@@ -43,7 +43,7 @@
                             <div class="row">
                               <div class="col-sm-5">
                                 <a href="{{ route('book.show', $book->book_code) }}">
-                                  <img src="{{ asset('storage/images/' . $book->cover) }}" alt="{{ $book->title }}" style="width: 100px; height: 150px;">
+                                  <img src="{{ asset('storage/images/' . $book->cover) }}" alt="{{ $book->title }}" style="width: 110px; height: 165px;">
                                 </a>
                               </div>
                               <div class="col-sm-7">
