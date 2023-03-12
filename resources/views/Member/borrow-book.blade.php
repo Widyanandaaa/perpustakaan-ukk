@@ -51,8 +51,8 @@
                                       @endif
                                       <img src="{{ asset('storage/images/' . $cover[$index]) }}" alt="{{ $item->book_title }}">
                                     </a>
+                                    <a href="{{ route('book.show', $item->book_code) }}"><h5 class="text-wrap mt-3">{{ $item->book_title }}</h5></a>
                                   </div>
-                                  <a href="{{ route('book.show', $item->book_code) }}"><h5 class="text-wrap mt-3">{{ $item->book_title }}</h5></a>
                                 </div>
                               </div>
                             </div>
