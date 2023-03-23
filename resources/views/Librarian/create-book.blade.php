@@ -6,6 +6,9 @@
 @section('header', 'Tambah Buku')
 
 @section('css')
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="{{ asset('template/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+  
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('template/plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('template/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -139,6 +142,20 @@
                 </span>
               @enderror
             </div>
+            <div class="form-group">
+              <label>Tanggal Masuk</label>
+                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker- @error('entry_date') is-invalid @enderror" name="entry_date" data-target="#reservationdate">
+                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                @error('entry_date')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
             <button type="submit" class="btn bg-gradient-success mt-3 float-right">Simpan</button>
           </div>
         </div>
@@ -147,7 +164,11 @@
   </div>
 @endsection
 
-@section('js')
+@section('js')  
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="{{ asset('template/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('template/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
 <!-- Select2 -->
     <script src="{{ asset('template/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('template/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
@@ -156,6 +177,10 @@
         $('.select2').select2();
 
         bsCustomFileInput.init();
+        
+        $('#reservationdate').datetimepicker({
+              format: 'Y-MM-DD'
+        });
       });
     </script>
 @endsection

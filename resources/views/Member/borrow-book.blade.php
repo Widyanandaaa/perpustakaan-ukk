@@ -52,6 +52,17 @@
                                       <img src="{{ asset('storage/images/' . $cover[$index]) }}" alt="{{ $item->book_title }}">
                                     </a>
                                     <a href="{{ route('book.show', $item->book_code) }}"><h5 class="text-wrap mt-3">{{ $item->book_title }}</h5></a>
+                                  </div> 
+                                  <div class="row justify-content-center">
+                                    @if ($item->status === 'Pending')
+                                      <p class="text-muted">Menunggu konfirmasi</p>
+                                    @elseif ($item->status === 'Dipinjam')
+                                      <p class="text-muted">Tenggat : {{ $item->deadline }}</p>
+                                    @elseif ($item->status === 'Ditolak')
+                                      <p class="text-muted">permintaan pinjam ditolak!</p>
+                                    @elseif ($item->status === 'Dikembalikan')
+                                      <p class="text-muted">Dikembalikan pada : {{ $item->return_date }}</p>
+                                    @endif
                                   </div>
                                 </div>
                               </div>

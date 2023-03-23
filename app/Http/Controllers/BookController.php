@@ -63,9 +63,10 @@ class BookController extends Controller
             'synopsis' => 'required',
             'cover' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'category' => 'required',
-            'genres' => 'required|array',
+            'genres' => 'array',
             'amount' => 'required',
             'publication_year' => 'required',
+            'entry_date' => 'required',
 
         ]);
 
@@ -78,6 +79,7 @@ class BookController extends Controller
             'category' => $validatedData['category'],
             'book_count' => $validatedData['amount'],
             'publication_year' => $validatedData['publication_year'],
+            'entry_date' => $validatedData['entry_date'],
         ]);
 
         if ($request->hasFile('cover')) {
@@ -145,9 +147,10 @@ class BookController extends Controller
             'synopsis' => 'required',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg',
             'category' => 'required',
-            'genres' => 'required|array',
+            'genres' => 'array',
             'amount' => 'required',
             'publication_year' => 'required',
+            'entry_date' => 'required',
 
         ]);
 
@@ -162,6 +165,7 @@ class BookController extends Controller
         $book->category = $request->input('category');
         $book->book_count = $request->input('amount');
         $book->publication_year = $request->input('publication_year');
+        $book->publication_year = $request->input('entry_date');
         
         if ($request->hasFile('cover')) {
             $image = $request->file('cover');
